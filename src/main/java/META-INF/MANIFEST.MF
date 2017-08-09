@@ -1,0 +1,39 @@
+Manifest-Version: 1.0
+Class-Path: hibernate-validator-5.3.5.Final.jar spring-context-4.3.10.
+ RELEASE.jar spring-aop-4.3.10.RELEASE.jar spring-security-web-4.2.3.R
+ ELEASE.jar logback-core-1.1.11.jar spring-core-4.3.10.RELEASE.jar spr
+ ing-boot-starter-jdbc-1.5.6.RELEASE.jar spring-boot-actuator-docs-1.5
+ .6.RELEASE.jar spring-social-web-1.1.4.RELEASE.jar spring-orm-4.3.10.
+ RELEASE.jar spring-expression-4.3.10.RELEASE.jar spring-boot-autoconf
+ igure-1.5.6.RELEASE.jar spring-boot-starter-aop-1.5.6.RELEASE.jar spr
+ ing-social-config-1.1.4.RELEASE.jar spring-aspects-4.3.10.RELEASE.jar
+  hibernate-commons-annotations-5.0.1.Final.jar spring-boot-starter-ac
+ tuator-1.5.6.RELEASE.jar spring-boot-starter-web-1.5.6.RELEASE.jar sp
+ ring-security-config-4.2.3.RELEASE.jar spring-boot-starter-security-1
+ .5.6.RELEASE.jar spring-security-core-4.2.3.RELEASE.jar spring-boot-d
+ evtools-1.5.6.RELEASE.jar spring-boot-starter-data-rest-1.5.6.RELEASE
+ .jar dom4j-1.6.1.jar javassist-3.21.0-GA.jar logback-classic-1.1.11.j
+ ar spring-boot-actuator-1.5.6.RELEASE.jar spring-data-rest-webmvc-2.6
+ .6.RELEASE.jar mysql-connector-java-5.1.43.jar spring-tx-4.3.10.RELEA
+ SE.jar spring-boot-starter-logging-1.5.6.RELEASE.jar hibernate-core-5
+ .0.12.Final.jar antlr-2.7.7.jar jackson-core-2.8.9.jar jcl-over-slf4j
+ -1.7.25.jar spring-social-facebook-2.0.3.RELEASE.jar jackson-databind
+ -2.8.9.jar log4j-over-slf4j-1.7.25.jar tomcat-juli-8.5.16.jar spring-
+ jdbc-4.3.10.RELEASE.jar spring-boot-starter-data-jpa-1.5.6.RELEASE.ja
+ r spring-hateoas-0.23.0.RELEASE.jar spring-data-rest-core-2.6.6.RELEA
+ SE.jar spring-context-support-4.3.10.RELEASE.jar spring-beans-4.3.10.
+ RELEASE.jar tomcat-jdbc-8.5.16.jar spring-plugin-core-1.2.0.RELEASE.j
+ ar spring-web-4.3.10.RELEASE.jar javax.inject-1.jar jandex-2.0.0.Fina
+ l.jar aspectjweaver-1.8.10.jar spring-boot-starter-cache-1.5.6.RELEAS
+ E.jar jboss-logging-3.3.1.Final.jar spring-boot-1.5.6.RELEASE.jar hib
+ ernate-entitymanager-5.0.12.Final.jar slf4j-api-1.7.25.jar classmate-
+ 1.3.3.jar jul-to-slf4j-1.7.25.jar javax.transaction-api-1.2.jar jacks
+ on-annotations-2.8.0.jar hibernate-jpa-2.1-api-1.0.0.Final.jar spring
+ -boot-starter-1.5.6.RELEASE.jar validation-api-1.1.0.Final.jar spring
+ -boot-starter-validation-1.5.6.RELEASE.jar snakeyaml-1.17.jar spring-
+ data-jpa-1.11.6.RELEASE.jar spring-webmvc-4.3.10.RELEASE.jar spring-d
+ ata-commons-1.13.6.RELEASE.jar spring-social-core-1.1.4.RELEASE.jar s
+ pring-boot-starter-social-facebook-1.5.6.RELEASE.jar evo-inflector-1.
+ 2.2.jar
+Main-Class: com.davidepugliese.springfood.SpringfoodApplication
+
