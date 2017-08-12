@@ -10,7 +10,7 @@ import javax.persistence.EntityManagerFactory;
 
 @Configuration
 // @ComponentScan("com.luv2code.springdemo")
-public class WebConfig {
+public class DBConfig {
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
@@ -21,6 +21,7 @@ public class WebConfig {
         }
         return entityManagerFactory.unwrap(SessionFactory.class);
     }
+
 }
 
 
