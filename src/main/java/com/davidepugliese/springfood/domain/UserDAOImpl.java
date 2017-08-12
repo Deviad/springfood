@@ -41,12 +41,12 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public User getUserByUsername(String username)  {
 
         // get current hibernate session
 
-        String queryString = "FROM User u WHERE  u.email = :email";
-        return (User) em.createQuery(queryString).setParameter("email", email).getSingleResult();
+        String queryString = "FROM User u WHERE  u.username = :username";
+        return (User) em.createQuery(queryString).setParameter("username", username).getSingleResult();
     }
 
 }
