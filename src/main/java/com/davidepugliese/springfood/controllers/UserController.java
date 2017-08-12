@@ -48,11 +48,11 @@ public class UserController {
 
         if (this.validatorService.validate(username)) {
             Gson gson = new Gson();
-            String data = gson.toJson(userService.getUserByUsername(username));
+            Object data = userService.getUserByUsername(username);
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
             response.put("data", data);
-            String json = gson.toJson(response);
+            Object json = gson.toJson(response);
             return ResponseEntity.ok(json);
         } else {
             Map<String, String> response = new HashMap<>();
