@@ -14,16 +14,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/user/{id}")
+@RequestMapping("/api/user/")
 public class UserController {
 
-    @RequestMapping(method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+    private UserDAO userService;
+
+    @Autowired
+    public UserController(UserDAO userService) {
+        this.userService = userService;
+    }
+
+    @RequestMapping(value="/{id}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    User getUser() {
-        User user = new User();
-        user.setUsername("Davide");
-        user.setPassword(EncryptionUtilities.encryptPassword("Pippo"));
-        return user;
+    User getUser(@PathVariable Integer id) {
+
+//        User user = new User();
+//        user.setUsername(id);
+//        user.setPassword(EncryptionUtilities.encryptPassword("Pippo"));
+//        return user;
+
+        return userService.getUser(id);
+
     }
     @RequestMapping(method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus( HttpStatus.CREATED )
@@ -42,8 +53,6 @@ public class UserController {
         Gson gson = new Gson();
         return gson.toJson(response);
     }
-    @Autowired
-    UserDAO userService;
 }
 
 

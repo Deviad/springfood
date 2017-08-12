@@ -10,6 +10,6 @@ public interface UserDAO {
 
 //    public User getUser();
 
-    public void saveUser(User theUser);
-
+    void saveUser(User theUser);
+    User getUser(Integer id);
 }
