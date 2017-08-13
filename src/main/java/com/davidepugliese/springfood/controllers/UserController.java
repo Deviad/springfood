@@ -6,13 +6,12 @@ import com.davidepugliese.springfood.services.EncryptionUtilities;
 import com.davidepugliese.springfood.validators.IValidator;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.NoResultException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ public class UserController {
     private UserDAO userService;
     private IValidator<String> validatorService;
     @Autowired
-    public UserController(UserDAO userService, IValidator validatorService) {
+    public UserController(UserDAO userService, IValidator<String> validatorService) {
         this.userService = userService;
         this.validatorService = validatorService;
     }
@@ -62,29 +61,18 @@ public class UserController {
     public @ResponseBody
     ResponseEntity addUser(@RequestBody User data, Model model) {
 
-//        try {
-//
-//            User user =
-//
-//        } catch (NoResultException e) {
-//
-//        }
-
-        if (userService.getUserByUsername(data.getUsername()) == null) {
-
+        try {
             User user = new User();
             user.setUsername(data.getUsername());
             user.setPassword(EncryptionUtilities.encryptPassword(data.getPassword()));
             this.userService.saveUser(user);
-    //        model.addAttribute("user", user);
-
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");
             response.put("message", "User created successfully");
             Gson gson = new Gson();
             String json = gson.toJson(response);
             return ResponseEntity.ok(json);
-        } else {
+        } catch (DataIntegrityViolationException e) {
             Map<String, String> response = new HashMap<>();
             response.put("status", "fail");
             response.put("reason", "Username exists already");
