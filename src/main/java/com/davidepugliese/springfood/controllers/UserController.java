@@ -3,8 +3,9 @@ package com.davidepugliese.springfood.controllers;
 import com.davidepugliese.springfood.domain.UserDAO;
 import com.davidepugliese.springfood.models.User;
 import com.davidepugliese.springfood.services.EncryptionUtilities;
-import com.davidepugliese.springfood.validators.IValidator;
+import com.davidepugliese.springfood.adt.IEmail;
 import com.google.gson.Gson;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -20,11 +21,9 @@ import java.util.Map;
 public class UserController {
 
     private UserDAO userService;
-    private IValidator<String> validatorService;
     @Autowired
-    public UserController(UserDAO userService, IValidator<String> validatorService) {
+    public UserController(UserDAO userService) {
         this.userService = userService;
-        this.validatorService = validatorService;
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -35,25 +34,15 @@ public class UserController {
 
     @RequestMapping(value="/username/{username:.+}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    ResponseEntity getUserByUsername(@PathVariable String username) {
+    ResponseEntity getUserByUsername(@PathVariable String username) throws InvalidArgumentException {
 
-        if (this.validatorService.validate(username)) {
             Gson gson = new Gson();
-            Object data = userService.getUserByUsername(username);
+            Object data = userService.getUserByUsername(IEmail.create(username));
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
             response.put("data", data);
             Object json = gson.toJson(response);
             return ResponseEntity.ok(json);
-        } else {
-            Map<String, String> response = new HashMap<>();
-            response.put("status", "fail");
-            response.put("reason", "Wrong email format");
-            Gson gson = new Gson();
-            String json = gson.toJson(response);
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(json);
-        }
-
     }
 
     @RequestMapping(value="/add", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
