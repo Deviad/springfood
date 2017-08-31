@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:5002")
+//@CrossOrigin(origins = "http://localhost:5001")
 @RestController
 @RequestMapping("/api/user/")
 public class UserController {
@@ -34,21 +34,19 @@ public class UserController {
     }
 
     @RequestMapping(value="/username/{username:.+}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
+    public
     ResponseEntity getUserByUsername(@PathVariable String username) throws InvalidArgumentException {
 
-            Gson gson = new Gson();
             Object data = userService.getUserByUsername(IEmail.create(username));
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
             response.put("data", data);
-            Object json = gson.toJson(response);
-            return ResponseEntity.ok(json);
+            return ResponseEntity.ok(response);
     }
 
     @RequestMapping(value="/add", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus( HttpStatus.CREATED )
-    public @ResponseBody
+    public
     ResponseEntity addUser(@RequestBody User data, Model model) {
 
         try {
@@ -59,16 +57,12 @@ public class UserController {
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");
             response.put("message", "User created successfully");
-            Gson gson = new Gson();
-            String json = gson.toJson(response);
-            return ResponseEntity.ok(json);
+            return ResponseEntity.ok(response);
         } catch (DataIntegrityViolationException e) {
             Map<String, String> response = new HashMap<>();
             response.put("status", "fail");
             response.put("reason", "Username exists already");
-            Gson gson = new Gson();
-            String json = gson.toJson(response);
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(json);
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
     }
 }
