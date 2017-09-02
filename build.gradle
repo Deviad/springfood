@@ -53,7 +53,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('com.sun.xml.ws:jaxws-ri:2.2.10')
 	compile('org.eclipse.persistence:eclipselink:2.6.0')
-	compile('org.eclipse.persistence:commonj.sdo:2.1.1')
+	compile('org.eclipse.emf.commonj:sdo:2.3.0-v200706262000')
 	compile('io.jsonwebtoken:jjwt:0.7.0')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('mysql:mysql-connector-java')
