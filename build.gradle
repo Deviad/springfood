@@ -13,7 +13,26 @@ buildscript {
 		}
 	}
 	dependencies {
+		compile('org.springframework.boot:spring-boot-starter-actuator')
+		compile('org.springframework.boot:spring-boot-actuator-docs')
+		compile('org.springframework.boot:spring-boot-starter-cache')
+		compile('org.springframework.boot:spring-boot-starter-data-jpa')
+		compile('org.springframework.boot:spring-boot-starter-data-rest')
+		compile('org.springframework.boot:spring-boot-starter-security')
+		compile('org.springframework.boot:spring-boot-starter-social-facebook')
+		compile('org.springframework.boot:spring-boot-starter-validation')
+		compile('org.springframework.boot:spring-boot-starter-web')
+		compile('com.sun.xml.ws:jaxws-eclipselink-plugin:2.2.6-2')
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		compile('org.eclipse.persistence:eclipselink:2.3.1-M6')
+		compile('io.jsonwebtoken:jjwt:0.7.0')
+		runtime('org.springframework.boot:spring-boot-devtools')
+		runtime('mysql:mysql-connector-java')
+		compileOnly('org.projectlombok:lombok')
+		providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+		testCompile('org.springframework.boot:spring-boot-starter-test')
+		testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+		testCompile('org.springframework.security:spring-security-test')
 	}
 }
 
@@ -41,36 +60,11 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 
-
-repositories {
-	mavenCentral()
-}
-
 configurations {
 	providedRuntime
 }
 
-dependencies {
-	compile('org.springframework.boot:spring-boot-starter-actuator')
-	compile('org.springframework.boot:spring-boot-actuator-docs')
-	compile('org.springframework.boot:spring-boot-starter-cache')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-data-rest')
-	compile('org.springframework.boot:spring-boot-starter-security')
-	compile('org.springframework.boot:spring-boot-starter-social-facebook')
-	compile('org.springframework.boot:spring-boot-starter-validation')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('com.sun.xml.ws:jaxws-eclipselink-plugin:2.2.6-2')
-	compile('org.eclipse.persistence:eclipselink:2.3.1-M6')
-	compile('io.jsonwebtoken:jjwt:0.7.0')
-	runtime('org.springframework.boot:spring-boot-devtools')
-	runtime('mysql:mysql-connector-java')
-	compileOnly('org.projectlombok:lombok')
-	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
-	testCompile('org.springframework.security:spring-security-test')
-}
+
 
 bootRun {
 	addResources = true
