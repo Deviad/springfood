@@ -5,6 +5,8 @@ import com.davidepugliese.springfood.models.User;
 import com.davidepugliese.springfood.services.EncryptionUtilities;
 import com.davidepugliese.springfood.adt.IEmail;
 import com.sun.javaws.exceptions.InvalidArgumentException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,6 +68,52 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
     }
+    @RequestMapping(value="/login", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus( HttpStatus.OK )
+    public
+    ResponseEntity login(@RequestBody User login, Model model) {
+
+
+            String jwtToken;
+
+            if (login.getUsername() == null || login.getPassword() == null) {
+                Map<String, String> response = new HashMap<>();
+                response.put("status", "fail");
+                response.put("reason", "Insert username and password");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+            }
+             System.out.println(login);
+            String email = login.getUsername();
+            System.out.println(login.getPassword());
+            String password = login.getPassword();
+
+            User user = userService.getUserByUsername(email);
+
+            if (user == null) {
+                Map<String, String> response = new HashMap<>();
+                response.put("status", "fail");
+                response.put("reason", "Username not found");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+            }
+
+            String pwd = user.getPassword();
+            System.out.println(password);
+            System.out.println(pwd);
+            if (!EncryptionUtilities.matches(password, pwd)) {
+                Map<String, String> response = new HashMap<>();
+                response.put("status", "fail");
+                response.put("reason", "Wrong password");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+            }
+
+            jwtToken = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
+                    .signWith(SignatureAlgorithm.HS256, "secretkey").compact();
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("data", jwtToken);
+            return ResponseEntity.ok(response);
+        }
 }
+
 
 

@@ -7,4 +7,8 @@ public class EncryptionUtilities {
       BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
       return passwordEncoder.encode(password);
     }
+    public static  Boolean  matches(String input_password, String db_password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.matches(input_password, db_password);
+    }
 }
