@@ -16,7 +16,7 @@ apply plugin: 'org.springframework.boot'
 compileJava {
 	options.fork = true
 	options.forkOptions.executable = 'javac'
-	options.compilerArgs << "-XDignore.symbol.file"
+	options.compilerArgs << "-XDignore.symbol.file=true"
 }
 
 jar {
