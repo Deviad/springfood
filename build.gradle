@@ -13,6 +13,7 @@ buildscript {
 		}
 	}
 	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		compile('org.springframework.boot:spring-boot-starter-actuator')
 		compile('org.springframework.boot:spring-boot-actuator-docs')
 		compile('org.springframework.boot:spring-boot-starter-cache')
@@ -23,7 +24,6 @@ buildscript {
 		compile('org.springframework.boot:spring-boot-starter-validation')
 		compile('org.springframework.boot:spring-boot-starter-web')
 		compile('com.sun.xml.ws:jaxws-eclipselink-plugin:2.2.6-2')
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		compile('org.eclipse.persistence:eclipselink:2.3.1-M6')
 		compile('io.jsonwebtoken:jjwt:0.7.0')
 		runtime('org.springframework.boot:spring-boot-devtools')
