@@ -60,8 +60,6 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-social-facebook')
 	compile('org.springframework.boot:spring-boot-starter-validation')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('com.sun.xml.ws:jaxws-ri:2.2.10')
-	compile('org.eclipse.persistence:eclipselink:2.6.5')
 	compile('io.jsonwebtoken:jjwt:0.7.0')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('mysql:mysql-connector-java')
