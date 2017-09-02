@@ -4,6 +4,13 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		jcenter()
+		maven {
+			url 'https://maven.atlassian.com/repository/public'
+		}
+		flatDir {
+			dirs 'libs'
+		}
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -11,6 +18,7 @@ buildscript {
 }
 
 apply plugin: 'idea'
+apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
 
@@ -21,6 +29,7 @@ tasks.withType(JavaCompile) {
 	options.compilerArgs << "-XDignore.symbol.file=true"
 	//enable incremental compilation
 	options.incremental = true
+	options.encoding = 'UTF-8'
 }
 
 jar {
