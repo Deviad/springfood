@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.filter.GenericFilterBean;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -15,7 +16,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class JwtFilter extends GenericFilterBean {
-
+    @Value("${jwt.secret}")
+    private String secret;
     public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain)
             throws IOException, ServletException {
 
@@ -44,7 +46,8 @@ public class JwtFilter extends GenericFilterBean {
             final String token = authHeader.substring(7);
 
             try {
-                final Claims claims = Jwts.parser().setSigningKey("secretkey").parseClaimsJws(token).getBody();
+                System.out.println(this.secret);
+                final Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
                 request.setAttribute("claims", claims);
             } catch (final SignatureException e) {
                 ObjectMapper mapper = new ObjectMapper();
