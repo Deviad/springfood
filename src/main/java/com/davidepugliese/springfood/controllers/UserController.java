@@ -4,7 +4,6 @@ import com.davidepugliese.springfood.domain.UserDAO;
 import com.davidepugliese.springfood.models.User;
 import com.davidepugliese.springfood.services.EncryptionUtilities;
 import com.davidepugliese.springfood.adt.IEmail;
-import com.google.gson.Gson;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-//@CrossOrigin(origins = "http://localhost:5001")
 @RestController
 @RequestMapping("/api/user/")
 public class UserController {
