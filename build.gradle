@@ -32,10 +32,6 @@ tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
 
-jar {
-	baseName = 'gs-rest-service-cors'
-	version =  '0.1.0'
-}
 
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
