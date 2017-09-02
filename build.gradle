@@ -47,7 +47,7 @@ configurations {
 }
 
 dependencies {
-	compile('javax.ws.rs:javax.ws.rs-api:2.1')
+	compile('javax.servlet:javax.servlet-api:4.0.0')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-actuator-docs')
 	compile('org.springframework.boot:spring-boot-starter-cache')
