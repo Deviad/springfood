@@ -14,11 +14,14 @@ apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'org.springframework.boot'
 
-compileJava {
-	options.useAnt = true
+
+tasks.withType(JavaCompile) {
+	//enable compilation in a separate daemon process
 	options.fork = true
 	options.forkOptions.executable = 'javac'
 	options.compilerArgs << "-XDignore.symbol.file=true"
+	//enable incremental compilation
+	options.incremental = true
 }
 
 jar {
