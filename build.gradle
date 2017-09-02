@@ -13,7 +13,9 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'org.springframework.boot'
+
 compileJava {
+	options.useAnt = true
 	options.fork = true
 	options.forkOptions.executable = 'javac'
 	options.compilerArgs << "-XDignore.symbol.file=true"
