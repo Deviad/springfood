@@ -13,6 +13,12 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'org.springframework.boot'
+compileJava {
+	options.fork = true
+	options.forkOptions.executable = 'javac'
+	options.compilerArgs << "-XDignore.symbol.file"
+}
+
 jar {
 	baseName = 'gs-rest-service-cors'
 	version =  '0.1.0'
@@ -20,6 +26,8 @@ jar {
 
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
+
+
 
 repositories {
 	mavenCentral()
