@@ -12,6 +12,9 @@ buildscript {
 			dirs 'libs'
 		}
 	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
 }
 
 apply plugin: 'idea'
@@ -43,7 +46,7 @@ configurations {
 }
 
 dependencies {
-	classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-actuator-docs')
 	compile('org.springframework.boot:spring-boot-starter-cache')
