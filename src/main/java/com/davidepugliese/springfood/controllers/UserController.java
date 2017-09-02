@@ -8,6 +8,7 @@ import com.sun.javaws.exceptions.InvalidArgumentException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,7 +24,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/user/")
 public class UserController {
-
+    @Value("${jwt.secret}")
+    private String secretKey;
     private UserDAO userService;
     @Autowired
     public UserController(UserDAO userService) {
@@ -105,9 +107,9 @@ public class UserController {
                 response.put("reason", "Wrong password");
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
             }
-
+            System.out.println(secretKey);
             jwtToken = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
-                    .signWith(SignatureAlgorithm.HS256, "secretkey").compact();
+                    .signWith(SignatureAlgorithm.HS256, secretKey).compact();
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
             response.put("data", jwtToken);
