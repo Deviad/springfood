@@ -8,9 +8,6 @@ buildscript {
 		maven {
 			url 'https://maven.atlassian.com/repository/public'
 		}
-		flatDir {
-			dirs 'lib'
-		}
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -47,6 +44,7 @@ configurations {
 }
 
 dependencies {
+	compile fileTree(dir: 'lib', include: '*.jar')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-actuator-docs')
 	compile('org.springframework.boot:spring-boot-starter-cache')
