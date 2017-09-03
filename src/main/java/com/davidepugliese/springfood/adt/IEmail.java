@@ -1,8 +1,4 @@
 package com.davidepugliese.springfood.adt;
-
-
-
-
 import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.util.regex.Pattern;
