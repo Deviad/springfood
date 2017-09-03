@@ -84,9 +84,9 @@ public class UserController {
                 response.put("reason", "Insert username and password");
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
             }
-             System.out.println(login);
+
             String email = login.getUsername();
-            System.out.println(login.getPassword());
+
             String password = login.getPassword();
 
             User user = userService.getUserByUsername(email);
@@ -99,15 +99,12 @@ public class UserController {
             }
 
             String pwd = user.getPassword();
-            System.out.println(password);
-            System.out.println(pwd);
             if (!EncryptionUtilities.matches(password, pwd)) {
                 Map<String, String> response = new HashMap<>();
                 response.put("status", "fail");
                 response.put("reason", "Wrong password");
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
             }
-            System.out.println(secretKey);
             jwtToken = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
                     .signWith(SignatureAlgorithm.HS256, secretKey).compact();
             Map<String, Object> response = new HashMap<>();
