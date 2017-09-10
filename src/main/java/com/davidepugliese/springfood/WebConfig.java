@@ -16,7 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import javax.persistence.EntityManagerFactory;
 
 @Configuration
-@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
+@ComponentScan(basePackages = {"com.davidepugliese"})
+@EnableLoadTimeWeaving
 
 public class WebConfig {
 
@@ -59,12 +60,6 @@ public class WebConfig {
     public InstrumentationLoadTimeWeaver loadTimeWeaver()  throws Throwable {
         InstrumentationLoadTimeWeaver loadTimeWeaver = new InstrumentationLoadTimeWeaver();
         return loadTimeWeaver;
-    }
-
-    @Bean
-    public Acl AclAspect() {
-        Acl aspect = Aspects.aspectOf(Acl.class);
-        return aspect;
     }
 }
 

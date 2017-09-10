@@ -35,12 +35,13 @@ public class UserController {
 
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-    @Acl
+
     public @ResponseBody
     User getUser(@PathVariable Integer id) {
         return userService.getUser(id);
     }
 
+    @Acl
     @RequestMapping(value="/username/{username:.+}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
     public
     ResponseEntity getUserByUsername(@PathVariable String username) throws InvalidArgumentException {
