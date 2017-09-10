@@ -2,6 +2,7 @@ package com.davidepugliese.springfood.controllers;
 
 import com.davidepugliese.springfood.domain.UserDAO;
 import com.davidepugliese.springfood.models.User;
+import com.davidepugliese.springfood.security.Acl;
 import com.davidepugliese.springfood.services.EncryptionUtilities;
 import com.davidepugliese.springfood.adt.IEmail;
 import com.sun.javaws.exceptions.InvalidArgumentException;
@@ -15,8 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.ServletException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +31,11 @@ public class UserController {
         this.userService = userService;
     }
 
+
+
+
     @RequestMapping(value="/{id}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+    @Acl("asdasdas")
     public @ResponseBody
     User getUser(@PathVariable Integer id) {
         return userService.getUser(id);
