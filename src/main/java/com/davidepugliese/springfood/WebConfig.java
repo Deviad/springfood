@@ -1,11 +1,13 @@
 package com.davidepugliese.springfood;
 
+import com.davidepugliese.springfood.security.Acl;
+import org.aspectj.lang.Aspects;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.*;
+import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -14,9 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import javax.persistence.EntityManagerFactory;
 
 @Configuration
-@EnableAspectJAutoProxy
-@EnableScheduling
-// @ComponentScan("com.luv2code.springdemo")
+@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)
+
 public class WebConfig {
 
 
@@ -54,6 +55,17 @@ public class WebConfig {
         return registrationBean;
     }
 
+    @Bean
+    public InstrumentationLoadTimeWeaver loadTimeWeaver()  throws Throwable {
+        InstrumentationLoadTimeWeaver loadTimeWeaver = new InstrumentationLoadTimeWeaver();
+        return loadTimeWeaver;
+    }
+
+    @Bean
+    public Acl AclAspect() {
+        Acl aspect = Aspects.aspectOf(Acl.class);
+        return aspect;
+    }
 }
 
 
