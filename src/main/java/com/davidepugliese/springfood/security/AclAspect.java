@@ -11,12 +11,15 @@ import org.springframework.stereotype.Component;
 
 
 
+@Component
 @Aspect
-@ConfigurationProperties("aclaspect")
 public class AclAspect {
+    @Pointcut(value = "@annotation(accLevel)")
+    public void accessControl(Acl accLevel) {
+    }
 
-    @Around("within(com.davidepugliese.springfood) && @annotation(com.davidepugliese.springfood.security.Acl)")
-    public Object value(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around(value = "com.davidepugliese.springfood.security.AclAspect.accessControl(accLevel)")
+    public Object value(ProceedingJoinPoint joinPoint, Acl accLevel) throws Throwable {
 //        Object[] originalArguments = joinPoint.getArgs();
 //
 //        Object[] newArguments = new Object[1];
@@ -25,8 +28,8 @@ public class AclAspect {
 
 //        joinPoint.proceed(newArguments);
 
-          System.out.println("Hello world!");
-          return joinPoint.proceed();
+        System.out.println("Hello world!");
+        return joinPoint.proceed();
 
     }
 }
