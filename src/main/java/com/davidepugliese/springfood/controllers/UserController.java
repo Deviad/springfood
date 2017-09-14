@@ -41,7 +41,7 @@ public class UserController {
         return userService.getUser(id);
     }
 
-    @Acl
+    @Acl("whatever")
     @RequestMapping(value="/username/{username:.+}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
     public
     ResponseEntity getUserByUsername(@PathVariable String username) throws InvalidArgumentException {
@@ -112,7 +112,8 @@ public class UserController {
             jwtToken = Jwts.builder().setSubject(email).claim("roles", "user").setIssuedAt(new Date())
                     .signWith(SignatureAlgorithm.HS256, secretKey).compact();
             Map<String, Object> response = new HashMap<>();
-            response.put("status", "success");
+            Object status_message = "success";
+            response.put("status", "status_message");
             response.put("data", jwtToken);
             return ResponseEntity.ok(response);
         }

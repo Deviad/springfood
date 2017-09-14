@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 
 public @interface Acl{
+    public String value();
 }
