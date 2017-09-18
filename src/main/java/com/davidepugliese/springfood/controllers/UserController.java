@@ -1,10 +1,12 @@
 package com.davidepugliese.springfood.controllers;
 
+import com.davidepugliese.springfood.domain.RoleDAO;
 import com.davidepugliese.springfood.domain.UserDAO;
 import com.davidepugliese.springfood.models.User;
 import com.davidepugliese.springfood.security.Acl;
 import com.davidepugliese.springfood.services.EncryptionUtilities;
 import com.davidepugliese.springfood.adt.IEmail;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -26,9 +28,11 @@ public class UserController {
     @Value("${jwt.secret}")
     private String secretKey;
     private UserDAO userService;
+    private RoleDAO roleService;
     @Autowired
-    public UserController(UserDAO userService) {
+    public UserController(UserDAO userService, RoleDAO roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
 
@@ -44,13 +48,32 @@ public class UserController {
     @Acl("whatever")
     @RequestMapping(value="/username/{username:.+}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
     public
-    ResponseEntity getUserByUsername(@PathVariable String username) throws InvalidArgumentException {
-
-            Object data = userService.getUserByUsername(IEmail.create(username));
+    ResponseEntity getUserByUsername(@PathVariable String username, @RequestHeader(value="Authorization") String token) throws InvalidArgumentException {
+            Object user = userService.getUserByUsername(IEmail.create(username));
+            System.out.println(">>>>>>BEGIN TESTTTTTTT<<<<<<<");
+            System.out.println(user);
+            System.out.println(">>>>>>END TESTTTTT<<<<<<<");
             Map<String, Object> response = new HashMap<>();
+
             response.put("status", "success");
-            response.put("data", data);
+            response.put("data", user);
+
             return ResponseEntity.ok(response);
+    }
+
+    @RequestMapping(value="/role/{rolename:.+}", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+    public
+    ResponseEntity getUsersByRole(@PathVariable String rolename, @RequestHeader(value="Authorization") String token) throws InvalidArgumentException {
+        Object users = roleService.getUsersByRole(rolename);
+        System.out.println(">>>>>>BEGIN TESTTTTTTT<<<<<<<");
+        System.out.println(users);
+        System.out.println(">>>>>>END TESTTTTT<<<<<<<");
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("status", "success");
+        response.put("data", users);
+
+        return ResponseEntity.ok(response);
     }
 
     @RequestMapping(value="/add", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -113,7 +136,7 @@ public class UserController {
                     .signWith(SignatureAlgorithm.HS256, secretKey).compact();
             Map<String, Object> response = new HashMap<>();
             Object status_message = "success";
-            response.put("status", "status_message");
+            response.put("status", status_message);
             response.put("data", jwtToken);
             return ResponseEntity.ok(response);
         }
