@@ -23,7 +23,7 @@ public class Role {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    protected @Getter @Setter List<User> users = new ArrayList<>();
+    protected @Getter @Setter Set<User> users = new HashSet<>();
     @Id @GeneratedValue(strategy= GenerationType.AUTO) @Getter protected int id;
     @Column(length = 255, unique = true, nullable=false) protected @Getter @Setter String role;
 
