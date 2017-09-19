@@ -38,7 +38,7 @@ public class UserController {
 
 
 
-    @RequestMapping(value="/{id}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/{id}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 
     public @ResponseBody
     User getUser(@PathVariable Integer id) {
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @Acl("whatever")
-    @RequestMapping(value="/username/{username:.+}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/username/{username:.+}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public
     ResponseEntity getUserByUsername(@PathVariable String username, @RequestHeader(value="Authorization") String token) throws InvalidArgumentException {
             Object user = userService.getUserByUsername(IEmail.create(username));
@@ -61,7 +61,7 @@ public class UserController {
             return ResponseEntity.ok(response);
     }
 
-    @RequestMapping(value="/role/{rolename:.+}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/role/{rolename:.+}", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public
     ResponseEntity getUsersByRole(@PathVariable String rolename, @RequestHeader(value="Authorization") String token) throws InvalidArgumentException {
         Object users = roleService.getUsersByRole(rolename);
@@ -76,10 +76,10 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @RequestMapping(value="/add", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/add", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus( HttpStatus.CREATED )
     public
-    ResponseEntity addUser(@RequestBody User data, Model model) {
+    ResponseEntity addUser(@RequestBody User data) {
 
         try {
             User user = new User();
@@ -97,7 +97,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
     }
-    @RequestMapping(value="/login", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/login", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus( HttpStatus.OK )
     public
     ResponseEntity login(@RequestBody User login, Model model) {
