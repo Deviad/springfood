@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Set;
 
 @Transactional
 @Repository
@@ -45,17 +46,17 @@ public class RoleDAOImpl implements RoleDAO {
 //    ORDER BY op.username
 
 
-    public List<User> getUsersByRole(String rolename) {
+    public Set<User> getUsersByRole(String rolename) {
         String queryString = "SELECT u.username FROM Role r JOIN  r.users u where  r.role = :rolename";
-        List<User> foo = (List<User>) em.createQuery(queryString).setParameter("rolename", rolename).getResultList();
+        Set<User> foo = (Set<User>) em.createQuery(queryString).setParameter("rolename", rolename).getResultList();
         System.out.println(foo);
         return foo;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<String> getRoles() {
+    public Set<String> getRoles() {
         String queryString = "FROM Role r";
-        return (List<String>) em.createQuery(queryString).getResultList();
+        return (Set<String>) em.createQuery(queryString).getResultList();
     }
 }
