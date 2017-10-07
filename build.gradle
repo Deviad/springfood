@@ -86,6 +86,8 @@ dependencies {
     compile('org.aspectj:aspectjrt:1.8.8')
 	compile('org.springframework:spring-instrument')
 	compile('io.jsonwebtoken:jjwt:0.7.0')
+	compile('com.google.http-client:google-http-client:1.22.0')
+	compile('com.google.http-client:google-http-client-jackson2:1.22.0')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('mysql:mysql-connector-java')
 	compileOnly('org.projectlombok:lombok')
