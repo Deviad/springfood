@@ -2,6 +2,7 @@ package com.davidepugliese.springfood.domain;
 
 import com.davidepugliese.springfood.models.Role;
 import com.davidepugliese.springfood.models.User;
+import com.davidepugliese.springfood.models.UserInfo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,11 @@ public class UserDAOImpl implements UserDAO {
 
         // save the customer ... finally LOL
         currentSession.save(theUser);
+    }
+    @Override
+    public void updateUserInfo (User user, UserInfo userInfo) {
+//        Session currentSession = sessionFactory.getCurrentSession();
+        user.setUserInfo(userInfo);
     }
 
     @Override

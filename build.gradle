@@ -52,13 +52,16 @@ tasks.withType(JavaCompile) {
 	options.incremental = true
 	options.encoding = 'UTF-8'
 }
+jar {
+	baseName = 'springfood'
+	version = '1.0.1-SNAPSHOT'
+	sourceCompatibility = 1.8
 
-
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
-
-
-
+}
+plugins {
+	id "org.zeroturnaround.gradle.jrebel" version "1.1.6"
+}
+jar.dependsOn(generateRebel)
 repositories {
 	mavenCentral()
 }

@@ -100,7 +100,7 @@ public class PostController {
         } catch (DataIntegrityViolationException e) {
             Map<String, String> response = new HashMap<>();
             response.put("status", "fail");
-            response.put("reason", "Username exists already");
+            response.put("reason", "There was an error");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
     }

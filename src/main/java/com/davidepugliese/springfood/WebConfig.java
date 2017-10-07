@@ -2,24 +2,32 @@ package com.davidepugliese.springfood;
 
 import com.davidepugliese.springfood.security.AclAspect;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.json.UTF8DataInputJsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.Aspects;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.*;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
+import org.springframework.security.crypto.codec.Utf8;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import javax.persistence.EntityManagerFactory;
+import java.nio.charset.Charset;
+import java.util.List;
 
 @Configuration
 @ComponentScan(basePackages = {"com.davidepugliese"})
 //@EnableLoadTimeWeaving
 @EnableAspectJAutoProxy
-public class WebConfig {
+public class WebConfig extends WebMvcConfigurationSupport {
 
 
     @Autowired
@@ -67,15 +75,7 @@ public class WebConfig {
 //        // ... inject dependencies here if not using @Autowired
 //        return aspect;
 //    }
-//    @Bean
-//    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-//        MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-//        jsonConverter.setObjectMapper(objectMapper);
-//        jsonConverter.setDefaultCharset(null);
-//        return jsonConverter;
-//    }
+
 }
 
 

@@ -2,8 +2,7 @@ package com.davidepugliese.springfood.domain;
 
 import com.davidepugliese.springfood.models.Role;
 import com.davidepugliese.springfood.models.User;
-
-import java.util.Set;
+import com.davidepugliese.springfood.models.UserInfo;
 
 
 public interface UserDAO {
@@ -11,6 +10,9 @@ public interface UserDAO {
 //    public User getUser();
 
     void saveUser(User theUser);
+
+    void updateUserInfo(User user, UserInfo userInfo);
+
     User getUser(Integer id);
     User getUserByUsername(String username);
 //    Set<Role> getRolesByUsername(String username);

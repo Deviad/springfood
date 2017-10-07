@@ -2,11 +2,13 @@ package com.davidepugliese.springfood.controllers;
 
 import com.davidepugliese.springfood.domain.RoleDAO;
 import com.davidepugliese.springfood.domain.UserDAO;
+//import com.davidepugliese.springfood.domain.UserInfoDAO;
+import com.davidepugliese.springfood.domain.UserInfoDAO;
 import com.davidepugliese.springfood.models.User;
+import com.davidepugliese.springfood.models.UserInfo;
 import com.davidepugliese.springfood.security.Acl;
 import com.davidepugliese.springfood.services.EncryptionUtilities;
 import com.davidepugliese.springfood.adt.IEmail;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,10 +31,12 @@ public class UserController {
     private String secretKey;
     private UserDAO userService;
     private RoleDAO roleService;
+    private UserInfoDAO userInfoService;
     @Autowired
     public UserController(UserDAO userService, RoleDAO roleService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.userInfoService = userInfoService;
     }
 
 
@@ -77,18 +81,26 @@ public class UserController {
     }
 
     @RequestMapping(value="/add", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus( HttpStatus.CREATED )
+
     public
     ResponseEntity addUser(@RequestBody User data) {
 
         try {
             User user = new User();
+            UserInfo userinfo  = new UserInfo();
+            userinfo.setUser(user);
             user.setUsername(data.getUsername());
             user.setPassword(EncryptionUtilities.encryptPassword(data.getPassword()));
+            user.setUserInfo(userinfo);
             this.userService.saveUser(user);
-            Map<String, String> response = new HashMap<>();
+            Map<String, Object> response = new HashMap<>();
+            Map<String, Object> theData = new HashMap<>();
+
+            theData.put("id", (Integer)user.getId());
             response.put("status", "success");
             response.put("message", "User created successfully");
+            response.put("data", theData);
+
             return ResponseEntity.ok(response);
         } catch (DataIntegrityViolationException e) {
             Map<String, String> response = new HashMap<>();
@@ -96,6 +108,31 @@ public class UserController {
             response.put("reason", "Username exists already");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
+    }
+    @RequestMapping(value="/addinfo", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+
+
+    public ResponseEntity addUserInfo(@RequestBody UserInfo data) {
+
+//        try {
+
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.setFirstName(data.getFirstName());
+            userInfo.setLastName(data.getLastName());
+            userInfo.setAddress(data.getAddress());
+            User user = this.userService.getUser(data.getId());
+            this.userService.updateUserInfo(user, userInfo);
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("message", "User's info added successfully");
+            return ResponseEntity.ok(response);
+//        } catch (DataIntegrityViolationException e) {
+//            Map<String, String> response = new HashMap<>();
+//            response.put("status", "fail");
+//            response.put("reason", "There was an error");
+//            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+//        }
     }
     @RequestMapping(value="/login", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus( HttpStatus.OK )

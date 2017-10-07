@@ -11,16 +11,25 @@ import javax.persistence.*;
 import java.util.*;
 
 
-@Data
-@ToString
+//@Data
+//@ToString
 @Entity
 @Table(name = "users") // necessary if you want the table to be named users instead of user
 public class User {
 //    @JsonManagedReference
-    @ManyToMany(mappedBy = "users")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @OrderBy("id ASC")
     protected @Getter @Setter List<Role> roles = new ArrayList<>();
     @Id @GeneratedValue(strategy= GenerationType.AUTO) protected @Getter int id;
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.PERSIST
+    )
+    @JsonIgnore
+    protected @Getter @Setter UserInfo userInfo;
+
+
     @Column(length = 255, unique = true, nullable=false) protected @Getter @Setter String username;
     @Column(length = 255, unique = true, nullable = false) protected @Getter @Setter String password;
 }
