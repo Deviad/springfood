@@ -1,0 +1,180 @@
+package com.davidepugliese.springfood.controllers;
+
+import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.api.client.util.Charsets;
+import com.google.common.hash.Hashing;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+
+import javax.imageio.ImageIO;
+
+/**
+ * Handles requests for the application file upload requests
+ */
+@RestController
+@RequestMapping("/api/")
+public class FileManagerController {
+
+    private static final Logger logger = LoggerFactory
+            .getLogger(FileManagerController.class);
+
+
+
+
+    /**
+     * Upload single file using Spring Controller
+     */
+    @RequestMapping(value = "/image/upload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public @ResponseBody
+    ResponseEntity<Map<String, String>> uploadFileHandler(@RequestParam("name") String name,
+                                                          @RequestParam("file") MultipartFile file) {
+
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+
+                // Creating the directory to store file
+                String rootPath = System.getProperty("user.home");
+                File dir = new File(rootPath + File.separator + "media");
+                if (!dir.exists())
+                    dir.mkdirs();
+                String date = LocalDateTime.now().toString();
+                String[] fileNameParts = name.split("\\.");
+                int extensionIndex = fileNameParts.length - 1;
+                String fileExtension = fileNameParts[extensionIndex];
+                Hashing.md5().hashString(date, Charsets.UTF_8 ).toString();
+                name = name + date;
+                name = Hashing.sha1().hashString( name, Charsets.UTF_8 ).toString();
+                // Create the file on server
+                File serverFile = new File(dir.getAbsolutePath()
+                        + File.separator + name + "." + fileExtension);
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream(serverFile));
+                stream.write(bytes);
+                stream.close();
+
+                logger.info("Server File Location="
+                        + serverFile.getAbsolutePath());
+
+                Map<String, String> response = new HashMap<>();
+                response.put("status", "success");
+                response.put("message", "You successfully uploaded successfully" + name + "." + fileExtension +"!");
+                return ResponseEntity.ok(response);
+            } catch (Exception e) {
+                Map<String, String> response = new HashMap<>();
+                response.put("status", "fail");
+                response.put("reason", "You failed to upload " + name +  " => " + e.getMessage());
+                return ResponseEntity.ok(response);
+            }
+        } else {
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "fail");
+            response.put("reason", "You failed to upload " + name + " because the file was empty.");
+            return ResponseEntity.ok(response);
+        }
+    }
+
+    /**
+     * Upload multiple file using Spring Controller
+     */
+    @RequestMapping(value = "/image/uploadMultipleFile", method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<Map<String, String>> uploadMultipleImageHandler(@RequestParam("name") String[] names,
+                                     @RequestParam("file") MultipartFile[] files) {
+
+        Map<String, String> response = new HashMap<>();
+
+
+        if (files.length != names.length)
+        {
+            response.put("status", "fail");
+            response.put("reason", "Mandatory information missing");
+            return ResponseEntity.ok(response);
+        }
+
+        String message = "";
+        for (int i = 0; i < files.length; i++) {
+            MultipartFile file = files[i];
+            String name = names[i];
+            try {
+                byte[] bytes = file.getBytes();
+
+                // Creating the directory to store file
+                String rootPath = System.getProperty("user.dir");
+                File dir = new File(rootPath + File.separator + "media");
+                if (!dir.exists())
+                    dir.mkdirs();
+
+                // Create the file on server
+                String[] fileNameParts = name.split("\\.");
+                int extensionIndex = fileNameParts.length - 1;
+                String fileExtension = fileNameParts[extensionIndex];
+                name = Hashing.sha1().hashString( name, Charsets.UTF_8 ).toString();
+                // Create the file on server
+                File serverFile = new File(dir.getAbsolutePath()
+                        + File.separator + name + "." + fileExtension);
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream(serverFile));
+                stream.write(bytes);
+                stream.close();
+
+                logger.info("Server File Location="
+                        + serverFile.getAbsolutePath());
+
+                message = message + "You successfully uploaded file " + name + ",";
+            } catch (Exception e) {
+                response.put("status", "fail");
+                response.put("reason", "You failed to upload " + name + " => " + e.getMessage());
+                return ResponseEntity.ok(response);
+            }
+        }
+
+        response.put("status", "success");
+        response.put("message", message);
+        return ResponseEntity.ok(response);
+    }
+
+    @RequestMapping(value = "/image/download/", method = RequestMethod.GET, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public @ResponseBody
+    ResponseEntity<Map<String, String>> downloadImageHandler(@RequestParam("name") String name,
+                                                          @RequestParam("file") MultipartFile file) {
+        String path = null;
+        Map<String, String> response = new HashMap<>();
+//        final DefaultResourceLoader loader = new DefaultResourceLoader();
+//        logger.info(loader.getResource("classpath:META-INF/resources/img/copyright.png").exists());
+//        Resource resource = loader.getResource("classpath:META-INF/resources/img/copyright.png");
+//        BufferedImage watermarkImage = ImageIO.read(resource.getFile());
+
+
+//        if (!dir.exists())
+//
+//        {
+//
+//            response.put("status", "success");
+//            response.put("message", path);
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+//        }
+
+        response.put("status", "success");
+        response.put("message", path);
+        return ResponseEntity.ok(response);
+
+    }
+}

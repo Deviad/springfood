@@ -58,10 +58,9 @@ jar {
 	sourceCompatibility = 1.8
 
 }
-plugins {
-	id "org.zeroturnaround.gradle.jrebel" version "1.1.6"
-}
-jar.dependsOn(generateRebel)
+
+
+
 repositories {
 	mavenCentral()
 }
@@ -91,6 +90,7 @@ dependencies {
 	compile('io.jsonwebtoken:jjwt:0.7.0')
 	compile('com.google.http-client:google-http-client:1.22.0')
 	compile('com.google.http-client:google-http-client-jackson2:1.22.0')
+	compile('com.google.guava:guava:23.1-jre')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('mysql:mysql-connector-java')
 	compileOnly('org.projectlombok:lombok')

@@ -1,7 +1,9 @@
 package com.davidepugliese.springfood.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +19,11 @@ import java.util.*;
 @Table(name = "users") // necessary if you want the table to be named users instead of user
 public class User {
 //    @JsonManagedReference
-    @JsonIgnore
+
+    @JsonIdentityInfo(
+            generator = ObjectIdGenerators.PropertyGenerator.class,
+            property = "id")
+
     @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @OrderBy("id ASC")
     protected @Getter @Setter List<Role> roles = new ArrayList<>();
@@ -26,7 +32,7 @@ public class User {
             mappedBy = "user",
             cascade = CascadeType.PERSIST
     )
-    @JsonIgnore
+
     protected @Getter @Setter UserInfo userInfo;
 
 

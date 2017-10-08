@@ -114,7 +114,7 @@ public class UserController {
 
     public ResponseEntity addUserInfo(@RequestBody UserInfo data) {
 
-//        try {
+        try {
 
 
             UserInfo userInfo = new UserInfo();
@@ -127,12 +127,12 @@ public class UserController {
             response.put("status", "success");
             response.put("message", "User's info added successfully");
             return ResponseEntity.ok(response);
-//        } catch (DataIntegrityViolationException e) {
-//            Map<String, String> response = new HashMap<>();
-//            response.put("status", "fail");
-//            response.put("reason", "There was an error");
-//            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
-//        }
+        } catch (DataIntegrityViolationException e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "fail");
+            response.put("reason", "There was an error");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
+        }
     }
     @RequestMapping(value="/login", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus( HttpStatus.OK )
