@@ -111,7 +111,6 @@ public class UserController {
     }
     @RequestMapping(value="/addinfo", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 
-
     public ResponseEntity addUserInfo(@RequestBody UserInfo data) {
 
         try {
