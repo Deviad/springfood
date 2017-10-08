@@ -115,8 +115,6 @@ public class UserController {
     public ResponseEntity addUserInfo(@RequestBody UserInfo data) {
 
         try {
-
-
             UserInfo userInfo = new UserInfo();
             userInfo.setFirstName(data.getFirstName());
             userInfo.setLastName(data.getLastName());

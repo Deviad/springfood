@@ -29,7 +29,7 @@ public class UserInfo {
                     name = "property", value = "user"
             )
     )
-    @Getter
+    @Getter @Setter
     private int id;
 //    @NotNull
     @Column(length = 255, nullable = true)
@@ -45,6 +45,7 @@ public class UserInfo {
     @OneToOne(optional = false) // Create FK constraint on PK column
     @PrimaryKeyJoinColumn
     @Getter @Setter
+    @JsonIgnore
     protected User user;
 
 }

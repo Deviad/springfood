@@ -15,10 +15,8 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.security.crypto.codec.Utf8;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
+
 import javax.persistence.EntityManagerFactory;
 import java.nio.charset.Charset;
 import java.util.List;
@@ -69,6 +67,15 @@ public class WebConfig extends WebMvcConfigurationSupport {
         InstrumentationLoadTimeWeaver loadTimeWeaver = new InstrumentationLoadTimeWeaver();
         return loadTimeWeaver;
     }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String rootPath = System.getProperty("user.home");
+
+        registry
+                .addResourceHandler("/media/**")
+                .addResourceLocations("file:" + rootPath + "/media/");
+    }
+
 //    @Bean
 //    public AclAspect interceptor() {
 //        AclAspect aspect = Aspects.aspectOf(AclAspect.class);
