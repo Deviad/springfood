@@ -33,6 +33,12 @@ public class UserDAOImpl implements UserDAO {
         // save the customer ... finally LOL
         currentSession.save(theUser);
     }
+
+    @Override
+    public void updateUser (User theUser) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.merge(theUser);
+    }
     @Override
     public void updateUserInfo (UserInfo userInfo) {
         Session currentSession = sessionFactory.getCurrentSession();
