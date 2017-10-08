@@ -24,17 +24,6 @@ public class UserInfoDAOImpl implements UserInfoDAO {
     }
 
 
-    @Override
-    public void saveUserInfo(UserInfo userInfo) {
-        // get current hibernate session
-        Session currentSession = sessionFactory.getCurrentSession();
-
-        // save the customer ... finally LOL
-        currentSession.save(userInfo);
-    }
-
-    //        String queryString = "SELECT u.username FROM Role r JOIN  r.users u where  r.role = :rolename";
-
 
     @Override
     public UserInfo getInfoByUserId(Integer theUserId) {
