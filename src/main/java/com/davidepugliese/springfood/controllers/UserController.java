@@ -116,11 +116,11 @@ public class UserController {
 
         try {
             UserInfo userInfo = new UserInfo();
+            userInfo.setId(data.getId());
             userInfo.setFirstName(data.getFirstName());
             userInfo.setLastName(data.getLastName());
             userInfo.setAddress(data.getAddress());
-            User user = this.userService.getUser(data.getId());
-            this.userService.updateUserInfo(user, userInfo);
+            this.userService.updateUserInfo(userInfo);
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");
             response.put("message", "User's info added successfully");

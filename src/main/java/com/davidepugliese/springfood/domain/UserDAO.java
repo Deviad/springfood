@@ -10,9 +10,7 @@ public interface UserDAO {
 //    public User getUser();
 
     void saveUser(User theUser);
-
-    void updateUserInfo(User user, UserInfo userInfo);
-
+    void updateUserInfo(UserInfo userInfo);
     User getUser(Integer id);
     User getUserByUsername(String username);
 //    Set<Role> getRolesByUsername(String username);

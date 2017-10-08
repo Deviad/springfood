@@ -41,6 +41,8 @@ public class UserInfo {
     @Column(length = 255, nullable = true)
     private @Getter @Setter String address;
 
+    @Column(length = 255, nullable = true)
+    private @Getter @Setter String picture;
 
     @OneToOne(optional = false) // Create FK constraint on PK column
     @PrimaryKeyJoinColumn
