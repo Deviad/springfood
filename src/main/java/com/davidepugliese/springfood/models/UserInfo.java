@@ -1,17 +1,10 @@
 package com.davidepugliese.springfood.models;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-//@ToString
 @Entity
 public class UserInfo {
 
