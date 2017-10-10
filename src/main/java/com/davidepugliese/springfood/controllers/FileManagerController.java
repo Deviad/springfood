@@ -60,7 +60,7 @@ public class FileManagerController {
     /**
      * Upload multiple file using Spring Controller
      */
-    @RequestMapping(value = "/image/uploadMultipleFile", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @RequestMapping(value = "/image/uploadMultipleFiles", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public @ResponseBody
     ResponseEntity<Map<String, Object>> uploadMultipleImageHandler(@RequestParam("names") String names,
                                      @RequestParam("files") MultipartFile[] files) {
