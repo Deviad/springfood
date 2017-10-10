@@ -89,6 +89,7 @@ dependencies {
 	compile('com.google.http-client:google-http-client:1.22.0')
 	compile('com.google.http-client:google-http-client-jackson2:1.22.0')
 	compile('com.google.guava:guava:23.1-jre')
+	compile('com.google.code.gson:gson:2.8.2')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('mysql:mysql-connector-java')
 	compileOnly('org.projectlombok:lombok')

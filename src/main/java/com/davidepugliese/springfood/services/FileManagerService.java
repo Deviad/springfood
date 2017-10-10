@@ -1,12 +1,12 @@
 package com.davidepugliese.springfood.services;
 
+import com.davidepugliese.springfood.adt.FormFileName;
 import com.google.api.client.util.ArrayMap;
 import com.google.api.client.util.Charsets;
 import com.google.common.hash.Hashing;
+import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class FileManagerService {
 
     private static final Logger logger = LoggerFactory
             .getLogger(FileManagerService.class);
+
 
 
     /**
@@ -88,13 +90,17 @@ public class FileManagerService {
      * Upload multiple file using Spring Controller
      */
     public @ResponseBody
-    Map<String, Object> saveMany(@RequestParam("name") String[] names,
-                                     @RequestParam("file") MultipartFile[] files) {
+    Map<String, Object> saveMany(@RequestParam("names") String names,
+                                     @RequestParam("files") MultipartFile[] files) {
 
+        JsonParser parser = new JsonParser();
+        JsonObject rootObj = parser.parse(names).getAsJsonObject();
+        JsonArray namesArray = rootObj.getAsJsonArray("names");
         Map<String, Object> response = new HashMap<>();
 
-
-        if (files.length != names.length)
+        System.out.println(namesArray.size());
+        System.out.println(files.length);
+        if (files.length != namesArray.size())
         {
             response.put("status", "fail");
             response.put("reason", "Mandatory information missing");
@@ -103,40 +109,42 @@ public class FileManagerService {
 
         List<String> message = new ArrayList<>();
         Map<String, String> data = new ArrayMap<>();
-        for (int i = 0; i < files.length; i++) {
-            MultipartFile file = files[i];
-            String name = names[i];
-            try {
-                byte[] bytes = file.getBytes();
+        for (MultipartFile file: files) {
+            for(JsonElement nameEl: namesArray) {
+                String name = nameEl.toString();
+                try {
 
-                // Creating the directory to store file
-                String rootPath = System.getProperty("user.dir");
-                File dir = new File(rootPath + File.separator + "media");
-                if (!dir.exists())
-                    dir.mkdirs();
+                    byte[] bytes = file.getBytes();
 
-                // Create the file on server
-                String[] fileNameParts = name.split("\\.");
-                int extensionIndex = fileNameParts.length - 1;
-                String fileExtension = fileNameParts[extensionIndex];
-                name = Hashing.sha1().hashString( name, Charsets.UTF_8 ).toString();
-                // Create the file on server
-                File serverFile = new File(dir.getAbsolutePath()
-                        + File.separator + name + "." + fileExtension);
-                BufferedOutputStream stream = new BufferedOutputStream(
-                        new FileOutputStream(serverFile));
-                stream.write(bytes);
-                stream.close();
+                    // Creating the directory to store file
+                    String rootPath = System.getProperty("user.dir");
+                    File dir = new File(rootPath + File.separator + "media");
+                    if (!dir.exists())
+                        dir.mkdirs();
 
-                logger.info("Server File Location="
-                        + serverFile.getAbsolutePath());
+                    // Create the file on server
+                    String[] fileNameParts = name.split("\\.");
+                    int extensionIndex = fileNameParts.length - 1;
+                    String fileExtension = fileNameParts[extensionIndex];
+                    name = Hashing.sha1().hashString(name, Charsets.UTF_8).toString();
+                    // Create the file on server
+                    File serverFile = new File(dir.getAbsolutePath()
+                            + File.separator + name + "." + fileExtension);
+                    BufferedOutputStream stream = new BufferedOutputStream(
+                            new FileOutputStream(serverFile));
+                    stream.write(bytes);
+                    stream.close();
 
-                message.add(String.format("You successfully uploaded file %s", name));
-                data.put("data", String.format("%s.%s", name, fileExtension));
-            } catch (Exception e) {
-                response.put("status", "fail");
-                response.put("reason", "You failed to upload " + name + " => " + e.getMessage());
-                return response;
+                    logger.info("Server File Location="
+                            + serverFile.getAbsolutePath());
+
+                    message.add(String.format("You successfully uploaded file %s", name));
+                    data.put("data", String.format("%s.%s", name, fileExtension));
+                } catch (Exception e) {
+                    response.put("status", "fail");
+                    response.put("reason", "You failed to upload " + name + " => " + e.getMessage());
+                    return response;
+                }
             }
         }
 
