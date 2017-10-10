@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import javafx.geometry.Pos;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.*;
@@ -24,10 +27,18 @@ public class User {
             generator = ObjectIdGenerators.PropertyGenerator.class,
             property = "id")
 
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
     @OrderBy("id ASC")
+
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     protected @Getter @Setter List<Role> roles = new ArrayList<>();
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    protected @Getter @Setter List<Post> posts = new ArrayList<>();
+
     @Id @GeneratedValue(strategy= GenerationType.AUTO) protected @Getter int id;
+
     @OneToOne(
             mappedBy = "user",
             cascade = CascadeType.PERSIST

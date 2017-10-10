@@ -5,7 +5,6 @@ import com.davidepugliese.springfood.domain.UserDAO;
 import com.davidepugliese.springfood.models.Post;
 import com.davidepugliese.springfood.models.User;
 import com.davidepugliese.springfood.security.Acl;
-import com.davidepugliese.springfood.services.EncryptionUtilities;
 import com.davidepugliese.springfood.adt.IEmail;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.javaws.exceptions.InvalidArgumentException;
@@ -103,6 +102,13 @@ public class PostController {
             response.put("reason", "There was an error");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(response);
         }
+    }
+
+    @RequestMapping(value="/delete", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+
+    public @ResponseBody
+    void deletePost(@RequestBody Integer id) {
+        this.postService.deletePost(id);
     }
 }
 

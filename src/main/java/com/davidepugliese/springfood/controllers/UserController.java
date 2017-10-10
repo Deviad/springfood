@@ -32,11 +32,13 @@ public class UserController {
     private UserDAO userService;
     private RoleDAO roleService;
     private UserInfoDAO userInfoService;
+    private EncryptionUtilities encr;
     @Autowired
-    public UserController(UserDAO userService, RoleDAO roleService) {
+    public UserController(UserDAO userService, RoleDAO roleService, EncryptionUtilities encr) {
         this.userService = userService;
         this.roleService = roleService;
         this.userInfoService = userInfoService;
+        this.encr = encr;
     }
 
 
@@ -90,7 +92,7 @@ public class UserController {
             UserInfo userinfo  = new UserInfo();
             userinfo.setUser(user);
             user.setUsername(data.getUsername());
-            user.setPassword(EncryptionUtilities.encryptPassword(data.getPassword()));
+            user.setPassword(encr.encryptPassword(data.getPassword()));
             user.setUserInfo(userinfo);
             this.userService.saveUser(user);
             Map<String, Object> response = new HashMap<>();
@@ -160,7 +162,7 @@ public class UserController {
             }
 
             String pwd = user.getPassword();
-            if (!EncryptionUtilities.matches(password, pwd)) {
+            if (!encr.matches(password, pwd)) {
                 Map<String, String> response = new HashMap<>();
                 response.put("status", "fail");
                 response.put("reason", "Wrong password");
