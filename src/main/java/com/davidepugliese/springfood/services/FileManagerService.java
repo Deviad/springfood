@@ -1,5 +1,6 @@
 package com.davidepugliese.springfood.services;
 
+import com.google.api.client.util.ArrayMap;
 import com.google.api.client.util.Charsets;
 import com.google.common.hash.Hashing;
 import org.slf4j.Logger;
@@ -14,7 +15,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -85,10 +88,10 @@ public class FileManagerService {
      * Upload multiple file using Spring Controller
      */
     public @ResponseBody
-    Map<String, String> saveMany(@RequestParam("name") String[] names,
+    Map<String, Object> saveMany(@RequestParam("name") String[] names,
                                      @RequestParam("file") MultipartFile[] files) {
 
-        Map<String, String> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
 
 
         if (files.length != names.length)
@@ -98,7 +101,8 @@ public class FileManagerService {
             return response;
         }
 
-        String message = "";
+        List<String> message = new ArrayList<>();
+        Map<String, String> data = new ArrayMap<>();
         for (int i = 0; i < files.length; i++) {
             MultipartFile file = files[i];
             String name = names[i];
@@ -127,7 +131,8 @@ public class FileManagerService {
                 logger.info("Server File Location="
                         + serverFile.getAbsolutePath());
 
-                message = message + "You successfully uploaded file " + name + ",";
+                message.add(String.format("You successfully uploaded file %s", name));
+                data.put("data", String.format("%s.%s", name, fileExtension));
             } catch (Exception e) {
                 response.put("status", "fail");
                 response.put("reason", "You failed to upload " + name + " => " + e.getMessage());
@@ -136,6 +141,7 @@ public class FileManagerService {
         }
 
         response.put("status", "success");
+        response.put("data", data);
         response.put("message", message);
         return response;
     }

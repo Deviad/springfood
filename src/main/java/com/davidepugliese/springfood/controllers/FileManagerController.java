@@ -62,7 +62,7 @@ public class FileManagerController {
      */
     @RequestMapping(value = "/image/uploadMultipleFile", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity<Map<String, String>> uploadMultipleImageHandler(@RequestParam("name") String[] names,
+    ResponseEntity<Map<String, Object>> uploadMultipleImageHandler(@RequestParam("name") String[] names,
                                      @RequestParam("file") MultipartFile[] files) {
 
         return ResponseEntity.ok(fileService.saveMany(names, files));
