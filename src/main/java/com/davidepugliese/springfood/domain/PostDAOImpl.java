@@ -3,64 +3,46 @@ package com.davidepugliese.springfood.domain;
 import com.davidepugliese.springfood.models.Post;
 import com.davidepugliese.springfood.models.Role;
 import com.davidepugliese.springfood.models.User;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Transactional
 @Repository
-public class PostDAOImpl implements PostDAO {
+@Qualifier("postDao")
+public class PostDAOImpl extends GenericDAO {
     private final SessionFactory sessionFactory;
 
     private final EntityManager em;
 
     @Autowired
     public PostDAOImpl(SessionFactory sessionFactory, EntityManager em) {
+        super(sessionFactory, em);
         this.sessionFactory = sessionFactory;
         this.em = em;
     }
 
-    @Override
-    public void savePost(Post thePost) {
-
-        // get current hibernate session
-        Session currentSession = sessionFactory.getCurrentSession();
-
-        // save the customer ... finally LOL
-        currentSession.save(thePost);
-    }
-
-
-    @Override
-    public void deletePost(Integer thePostId) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        String queryString = "DELETE Post p WHERE p.id = :thePostId";
-        Query q = currentSession.createQuery(queryString)
-                .setParameter("thePostId", thePostId);
-        q.executeUpdate();
-    }
-
-    @Override
-    public Post getPost(Integer thePostId) {
-
-        // get current hibernate session
-
-        String queryString = "FROM Post p WHERE  p.id = :thePostId";
-        return (Post) em.createQuery(queryString).setParameter("thePostId", thePostId).getSingleResult();
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
-    public List<Post> getPosts() {
-        String queryString = "FROM Post p";
-        return (List<Post>)  em.createQuery(queryString).getResultList();
+    @Override
+    public List<Post> getList() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery q = cb.createQuery(Post.class);
+        Root o = q.from(Post.class);
+        o.fetch("users", JoinType.INNER);
+        q.select(o);
+        return (List<Post>)this.em.createQuery(q).getResultList();
     }
-
 
 }

@@ -1,4 +1,5 @@
 package com.davidepugliese.springfood.models;
 
-public class UserSocial {
+public class UserSocial implements GenericEntity {
+
 }

@@ -20,7 +20,7 @@ import java.util.*;
 //@ToString
 @Entity
 @Table(name = "users") // necessary if you want the table to be named users instead of user
-public class User {
+public class User implements GenericEntity {
 //    @JsonManagedReference
 
     @JsonIdentityInfo(
@@ -43,7 +43,6 @@ public class User {
             mappedBy = "user",
             cascade = CascadeType.PERSIST
     )
-
     protected @Getter @Setter UserInfo userInfo;
 
 

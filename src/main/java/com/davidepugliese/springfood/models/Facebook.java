@@ -1,4 +1,4 @@
 package com.davidepugliese.springfood.models;
 
-public class Facebook {
+public class Facebook implements GenericEntity {
 }

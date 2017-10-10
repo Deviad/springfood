@@ -1,4 +1,4 @@
 package com.davidepugliese.springfood.models;
 
-public class Linkedin {
+public class Linkedin implements GenericEntity{
 }

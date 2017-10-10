@@ -86,6 +86,10 @@ public class FileManagerService {
         }
     }
 
+    //TODO: this feature needs refactoring for supporting application/JSON.
+    // I will send a compressed archive from the front-end and then
+    // I will use system tools to unzip it in the backend
+
     /**
      * Upload multiple file using Spring Controller
      */
@@ -153,30 +157,4 @@ public class FileManagerService {
         response.put("message", message);
         return response;
     }
-
-//    public @ResponseBody
-//    ResponseEntity<Map<String, String>> feedFile(@RequestParam("name") String name,
-//                                                          @RequestParam("file") MultipartFile file) {
-//        String path = null;
-//        Map<String, String> response = new HashMap<>();
-////        final DefaultResourceLoader loader = new DefaultResourceLoader();
-////        logger.info(loader.getResource("classpath:META-INF/resources/img/copyright.png").exists());
-////        Resource resource = loader.getResource("classpath:META-INF/resources/img/copyright.png");
-////        BufferedImage watermarkImage = ImageIO.read(resource.getFile());
-//
-//
-////        if (!dir.exists())
-////
-////        {
-////
-////            response.put("status", "success");
-////            response.put("message", path);
-////            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-////        }
-//
-//        response.put("status", "success");
-//        response.put("message", path);
-//        return ResponseEntity.ok(response);
-//
-//    }
 }

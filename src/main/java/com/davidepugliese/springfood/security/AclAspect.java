@@ -1,6 +1,7 @@
 package com.davidepugliese.springfood.security;
 import com.davidepugliese.springfood.adt.IEmail;
 import com.davidepugliese.springfood.domain.UserDAO;
+import com.davidepugliese.springfood.domain.UserDAOImpl;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,10 +24,10 @@ public class AclAspect {
 
     @Value("${jwt.secret}")
     private String secretKey;
-    private UserDAO userService;
+    private UserDAOImpl userService;
 
     @Autowired
-    public AclAspect(UserDAO userService) {
+    public AclAspect(UserDAOImpl userService) {
         this.userService = userService;
     }
 

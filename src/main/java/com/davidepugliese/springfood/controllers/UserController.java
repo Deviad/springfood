@@ -1,9 +1,8 @@
 package com.davidepugliese.springfood.controllers;
 
-import com.davidepugliese.springfood.domain.RoleDAO;
-import com.davidepugliese.springfood.domain.UserDAO;
+import com.davidepugliese.springfood.domain.*;
 //import com.davidepugliese.springfood.domain.UserInfoDAO;
-import com.davidepugliese.springfood.domain.UserInfoDAO;
+import com.davidepugliese.springfood.models.GenericEntity;
 import com.davidepugliese.springfood.models.User;
 import com.davidepugliese.springfood.models.UserInfo;
 import com.davidepugliese.springfood.security.Acl;
@@ -29,12 +28,12 @@ import java.util.Map;
 public class UserController {
     @Value("${jwt.secret}")
     private String secretKey;
-    private UserDAO userService;
-    private RoleDAO roleService;
+    private UserDAOImpl userService;
+    private RoleDAOImpl roleService;
     private UserInfoDAO userInfoService;
     private EncryptionUtilities encr;
     @Autowired
-    public UserController(UserDAO userService, RoleDAO roleService, EncryptionUtilities encr) {
+    public UserController(UserDAOImpl userService, RoleDAOImpl roleService, EncryptionUtilities encr) {
         this.userService = userService;
         this.roleService = roleService;
         this.userInfoService = userInfoService;
@@ -48,7 +47,7 @@ public class UserController {
 
     public @ResponseBody
     User getUser(@PathVariable Integer id) {
-        return userService.getUser(id);
+        return (User) userService.get(id);
     }
 
     @Acl("whatever")
@@ -94,7 +93,7 @@ public class UserController {
             user.setUsername(data.getUsername());
             user.setPassword(encr.encryptPassword(data.getPassword()));
             user.setUserInfo(userinfo);
-            this.userService.saveUser(user);
+            this.userService.save((GenericEntity) user);
             Map<String, Object> response = new HashMap<>();
             Map<String, Object> theData = new HashMap<>();
 

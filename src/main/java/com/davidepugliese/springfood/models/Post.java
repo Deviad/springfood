@@ -15,7 +15,8 @@ import java.util.List;
 @Data
 @ToString
 @Entity
-public class Post {
+@Table(name = "posts")
+public class Post implements GenericEntity {
     @JsonIdentityInfo(
             generator = ObjectIdGenerators.PropertyGenerator.class,
             property = "id")
@@ -26,6 +27,7 @@ public class Post {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+    @JoinColumn (name="user_id", referencedColumnName="id",nullable=true,unique=false)
     protected @Getter @Setter List<User> users = new ArrayList<>();
 
 

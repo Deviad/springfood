@@ -10,58 +10,46 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 @Transactional
 @Repository
-public class UserDAOImpl implements UserDAO {
+public class UserDAOImpl extends GenericDAO {
     private final SessionFactory sessionFactory;
 
     private final EntityManager em;
 
     @Autowired
     public UserDAOImpl(SessionFactory sessionFactory, EntityManager em) {
+        super(sessionFactory, em);
         this.sessionFactory = sessionFactory;
         this.em = em;
     }
 
-    @Override
-    public void saveUser(User theUser) {
 
-        // get current hibernate session
-        Session currentSession = sessionFactory.getCurrentSession();
 
-        // save the customer ... finally LOL
-        currentSession.save(theUser);
-    }
-
-    @Override
     public void updateUser (User theUser) {
         Session currentSession = sessionFactory.getCurrentSession();
         currentSession.merge(theUser);
     }
-    @Override
+
     public void updateUserInfo (UserInfo userInfo) {
         Session currentSession = sessionFactory.getCurrentSession();
         currentSession.merge(userInfo);
     }
 
-    @Override
-    public User getUser(Integer theUserId) {
+    @SuppressWarnings("unchecked")
+        public User getUserByUsername(String username)  {
 
-        // get current hibernate session
+            // get current hibernate session
+            String queryString = "FROM User u WHERE  u.username = :username";
+            return (User) em.createQuery(queryString).setParameter("username", username).getSingleResult();
+        }
 
-        String queryString = "FROM User u WHERE  u.id = :theUserId";
-        return (User) em.createQuery(queryString).setParameter("theUserId", theUserId).getSingleResult();
-    }
-
-    @Override
-    public User getUserByUsername(String username)  {
-
-        // get current hibernate session
-
-        String queryString = "FROM User u WHERE  u.username = :username";
-        return (User) em.createQuery(queryString).setParameter("username", username).getSingleResult();
-    }
 //    SELECT op.username, op.email, orders.p_id, orders.o_id, product.listed_price
 //    FROM Orders order
 //    INNER JOIN order.orderProcessing as op

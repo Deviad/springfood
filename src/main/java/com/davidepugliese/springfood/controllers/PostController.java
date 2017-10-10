@@ -1,7 +1,7 @@
 package com.davidepugliese.springfood.controllers;
 
-import com.davidepugliese.springfood.domain.PostDAO;
-import com.davidepugliese.springfood.domain.UserDAO;
+import com.davidepugliese.springfood.domain.*;
+import com.davidepugliese.springfood.models.GenericEntity;
 import com.davidepugliese.springfood.models.Post;
 import com.davidepugliese.springfood.models.User;
 import com.davidepugliese.springfood.security.Acl;
@@ -11,6 +11,7 @@ import com.sun.javaws.exceptions.InvalidArgumentException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -33,10 +34,10 @@ import java.util.Map;
 public class PostController {
     @Value("${jwt.secret}")
     private String secretKey;
-    private UserDAO userService;
-    private PostDAO postService;
+    private UserDAOImpl userService;
+    private PostDAOImpl postService;
     @Autowired
-    public PostController(UserDAO userService, PostDAO postService) {
+    public PostController(UserDAOImpl userService,  @Qualifier("postDao") PostDAOImpl postService) {
         this.userService = userService;
         this.postService = postService;
     }
@@ -48,14 +49,14 @@ public class PostController {
 
     public @ResponseBody
     Post getPost(@PathVariable Integer id) {
-        return postService.getPost(id);
+        return (Post) postService.get(id);
     }
 
     @RequestMapping(value="/", method=RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 
     public @ResponseBody
     List<Post> getPosts() {
-        return postService.getPosts();
+        return postService.getList();
     }
 
 
@@ -90,7 +91,7 @@ public class PostController {
             post.setContents(data.getContents());
             LocalDateTime current = LocalDateTime.now();
             post.setCreatedAt(current);
-            this.postService.savePost(post);
+            this.postService.save(post);
 
             Map<String, String> response = new HashMap<>();
             response.put("status", "success");
@@ -108,7 +109,7 @@ public class PostController {
 
     public @ResponseBody
     void deletePost(@RequestBody Integer id) {
-        this.postService.deletePost(id);
+        this.postService.delete(id);
     }
 }
 
